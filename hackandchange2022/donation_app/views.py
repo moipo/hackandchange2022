@@ -27,6 +27,8 @@ class General:
         ctx = {
         "data_last":data_last,
         "labels_last":labels_last,
+        "data_sum":data_last,
+        "labels_sum":labels_last,
         }
         return render(request, "donation_app/streamer_analytics.html", ctx)
 

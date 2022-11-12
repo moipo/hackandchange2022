@@ -3,12 +3,17 @@
 
 {% block streamer_analytics%}
 <div class = "medium_chart">
-  <canvas id="last_donations" ></canvas>
+  <canvas id="donations_last" ></canvas>
+</div>
+
+<div class = "medium_chart">
+  <canvas id="donations_sum" ></canvas>
 </div>
 
 
-
 <script>
+
+  //chart1(last)
   const labels_last = {{labels_last|safe}}
   const data_last = {
     labels: labels_last,
@@ -16,7 +21,7 @@
       label: 'Последние донаты',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data:   {{data_last|safe}}              //[0, 10, 5, 2, 20, 30, 45],
+      data:   {{data_last|safe}}
     }]
   };
 
@@ -26,10 +31,35 @@
     options: {}
   };
 
-  const last_donations = new Chart(
-  document.getElementById('last_donations'),
+  const donations_last = new Chart(
+  document.getElementById('donations_last'),
   config_last
-);
+  );
+
+
+  //chart2(sum)
+  const labels_sum = {{labels_sum|safe}}
+  const data_sum = {
+    labels: labels_sum,
+    datasets: [{
+      label: 'Последние донаты',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data:   {{data_sum|safe}}
+    }]
+  };
+
+  const config_sum = {
+    type: 'line',
+    data: data_sum,
+    options: {}
+  };
+
+  const donations_sum = new Chart(
+  document.getElementById('donations_sum'),
+  config_sum
+  );
+
 </script>
 
 <style>
