@@ -1,0 +1,21 @@
+{% extends "donation_app/base.html" %}
+{% block login %}
+  <h2>Login</h2>
+  <ul class = "messages">
+    {%if messages%}
+      {%for message in messages%}
+      <li>{{message}}</li>
+      {%endfor%}
+    {%endif%}
+  </ul>
+    <form method="post" action = "#">
+      {% csrf_token %}
+      <table>
+        {{ form.as_p }}
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="Submit"></td>
+        </tr>
+      </table>
+    </form>
+{% endblock %}

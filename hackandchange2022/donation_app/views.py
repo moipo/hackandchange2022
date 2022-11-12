@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import *
 from .models import *
-from functools import reduce
+
 
 
 class General:
@@ -66,5 +70,37 @@ class General:
 
 
 
-# class Donation:
-#     def create_donation(request):
+class Authorization:
+    def login(request):
+        form = UserLoginForm(request.POST or None)
+        ctx = {"form":form}
+        if form.is_valid():
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            user = authenticate(username = username, password = password)
+            if user is None:
+                messages.add_message(request,messages.INFO,"Неверный логин и/или пароль")
+                return render(request,"donation_app/signin_signup/login.html",ctx)
+            else:
+                login(user)
+                return redirect("donation_app/streamer_profile.html",ctx)
+
+        return render(request,"donation_app/signin_signup/login.html",ctx)
+
+
+
+class Registration:
+    def register(request):
+        if request.method == 'POST':
+            user_form = UserRegistrationForm(request.POST)
+            if user_form.is_valid():
+
+                new_user = user_form.save(commit=False)
+
+                new_user.set_password(user_form.cleaned_data['password'])
+
+                new_user.save()
+                return render(request, "donation_app/streamer_profile.html", {'new_user': new_user})
+        else:
+            user_form = UserRegistrationForm()
+        return render(request, "donation_app/signin_signup/register.html", {'user_form': user_form})
