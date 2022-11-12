@@ -11,7 +11,7 @@
 </div>
 
 
-<div class = "all_donations">
+<div class = "all_donations inln">
   <table class = "table">
     <tr>
         <th>Дата и время</th>
@@ -32,11 +32,15 @@
   </table>
 </div>
 
-<h1>Общий доход: {{total_income}}</h1>
+<div class="box inln">
 
-<h3>Средний размер доната {{avg_donation_price}}</h3>
+<h3>Общий доход: {{total_income}}</h3>
+<h3>Средний размер доната: {{avg_donation_price}}</h3>
+<h3>Всего донатов: {{total_donation_count}}</h3>
+</div>
 
-<div class = "top_dnt">
+
+<div class = "box inln">
   <h1>ТОП ДОНАТ: {{top_donation.price}}</h1>
     Дата: {{top_donation.date_created|date:"d.m"}} {{donation.date_created|time:"H:i"}} <hr>
     имя: {{top_donation.viewer.user.username}} <hr>
@@ -76,7 +80,7 @@
   const data_sum = {
     labels: labels_sum,
     datasets: [{
-      label: 'Общая сумма',
+      label: 'Динамика накопления за всё время',
       backgroundColor: 'rgb(0, 99, 132)',
       borderColor: 'rgb(0, 99, 132)',
       data:   {{data_sum|safe}}
@@ -105,18 +109,20 @@
 
 .all_donations{
   width:400px;
-  height: 400px;
+  height: 350px;
   overflow:auto;
   border:solid 3px orange;
 }
-
-.top_dnt
+.inln{
+  display: inline-block;
+}
+.box
 {
-  dispaly:inline-block;
   border:solid 3px green;
-  border-radius:3px;
+  border-radius:17px;
   width:400px;
   height:200px;
+  overflow:auto;
 }
 
 </style>

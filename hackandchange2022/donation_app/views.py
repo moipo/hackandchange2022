@@ -25,8 +25,8 @@ class General:
             all_donation_dates.append(donation.date_created)
             all_donation_strdates.append(donation.date_created.strftime(" %d.%m %H:%M"))
 
-        data_last = all_donation_prices[:LAST]
-        labels_last = all_donation_strdates[:LAST]
+        data_last = all_donation_prices[-LAST:]
+        labels_last = all_donation_strdates[-LAST:]
 
 
 
@@ -42,21 +42,23 @@ class General:
         top_donation = Donation.objects.filter(price = max_price)[0]
 
         total_income = sum(all_donation_prices)
+        total_donation_count = len(all_donation_prices)
 
-        avg_donation_price = round(total_income/len(all_donation_prices),2)
+        avg_donation_price = round(total_income/total_donation_count,2)
 
         ctx = {
         "data_last":data_last,
         "labels_last":labels_last,
 
         "data_sum":data_sum,
-        "labels_sum":labels_last,
+        "labels_sum":list(range(len(data_sum))),
 
         "all_st_donations": all_st_donations,
 
         "top_donation" : top_donation,
         "total_income": int(total_income),
         "avg_donation_price":avg_donation_price,
+        "total_donation_count":total_donation_count,
 
         }
         return render(request, "donation_app/streamer_analytics.html", ctx)
