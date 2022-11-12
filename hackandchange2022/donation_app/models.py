@@ -7,16 +7,21 @@ class Streamer(models.Model):
     user = models.OneToOneField(User, null = True, blank = True, on_delete = models.SET_NULL)
     url = models.CharField(max_length = 400, default = "", blank = True)
 
+    def __repr__(self):
+        return self.user.username
 
 class Viewer(models.Model):
     user = models.OneToOneField(User, null = True, blank = True, on_delete = models.SET_NULL)
     token = models.CharField(max_length = 300,default = "", blank = True)
     desired_url = models.CharField(max_length = 400,default = "", blank = True)
 
+    def __repr__(self):
+        return self.user.username
+
 
 class Donation(models.Model):
     price = models.FloatField( blank = True )
-    viewer = models.OneToOneField(Viewer, null = True, blank = True, on_delete = models.SET_NULL)
+    viewer = models.ForeignKey(Viewer, null = True, blank = True, on_delete = models.SET_NULL)
     streamer = models.ForeignKey(Streamer, null = True, blank = True, on_delete = models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add = True, blank = True)
     message = models.CharField(max_length = 700, default = "", blank = True)
