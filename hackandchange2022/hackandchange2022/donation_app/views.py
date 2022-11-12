@@ -8,4 +8,4 @@ class General:
         ctx = {
         "data" : "DATA FROM THE SERVER"
         }
-        return render(request,"donation_app/base.html" , ctx)
+        return render(request,"donation_app/index.html" , ctx)
