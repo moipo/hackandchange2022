@@ -1,0 +1,46 @@
+{% extends "donation_app/base.html" %}
+
+
+{% block streamer_analytics%}
+<div class = "medium_chart">
+<canvas id="myChart" ></canvas>
+</div>
+<script>
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'My First dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [0, 10, 5, 2, 20, 30, 45],
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {}
+  };
+
+  const myChart = new Chart(
+  document.getElementById('myChart'),
+  config
+);
+</script>
+
+<style>
+.medium_chart{
+  height : 300px;
+  width : 400px;
+}
+</style>
+{% endblock %}
