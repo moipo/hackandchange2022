@@ -74,16 +74,17 @@ class Authorization:
     def login(request):
         form = UserLoginForm(request.POST or None)
         ctx = {"form":form}
-        if form.is_valid():
+        if request.method == "POST":
             username = request.POST.get("username")
             password = request.POST.get("password")
-            user = authenticate(username = username, password = password)
+            user = authenticate(request,username = username, password = password)
             if user is None:
                 messages.add_message(request,messages.INFO,"Неверный логин и/или пароль")
                 return render(request,"donation_app/signin_signup/login.html",ctx)
             else:
-                login(user)
-                return redirect("donation_app/streamer_profile.html",ctx)
+                print("WORKED")
+                login(request,user)
+                return render(request,"donation_app/streamer_analytics.html",ctx)
 
         return render(request,"donation_app/signin_signup/login.html",ctx)
 
