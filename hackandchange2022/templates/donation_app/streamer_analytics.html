@@ -14,19 +14,36 @@
 <div class = "all_donations">
   <table class = "table">
     <tr>
+        <th>Дата и время</th>
+        <th>От кого донат</th>
         <th>Сумма</th>
         <th>Сообщение</th>
-        <th>Дата и время</th>
+
     </tr>
     {% for donation in all_st_donations %}
     <tr>
+      <td>{{donation.date_created|date:"d.m"}} {{donation.date_created|time:"H:i"}}</td>
+      <td>{{donation.viewer.user.username}}</td>
       <td>{{donation.price}}</td>
       <td>{{donation.message}}</td>
-      <td>{{donation.date_created|date:"d.m"}} {{donation.date_created|time:"H:i"}}</td>
+
     </tr>
     {% endfor %}
   </table>
 </div>
+
+<h1>Общий доход: {{total_income}}</h1>
+
+<h3>Средний размер доната {{avg_donation_price}}</h3>
+
+<div class = "top_dnt">
+  <h1>ТОП ДОНАТ: {{top_donation.price}}</h1>
+    Дата: {{top_donation.date_created|date:"d.m"}} {{donation.date_created|time:"H:i"}} <hr>
+    имя: {{top_donation.viewer.user.username}} <hr>
+    сообщение: {{top_donation.message}}
+</div>
+
+
 
 <script>
 
@@ -87,10 +104,20 @@
 }
 
 .all_donations{
-  width:300px;
+  width:400px;
   height: 400px;
   overflow:auto;
   border:solid 3px orange;
 }
+
+.top_dnt
+{
+  dispaly:inline-block;
+  border:solid 3px green;
+  border-radius:3px;
+  width:400px;
+  height:200px;
+}
+
 </style>
 {% endblock %}

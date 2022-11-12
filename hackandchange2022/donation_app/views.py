@@ -38,7 +38,12 @@ class General:
 
 
 
+        max_price = max(all_donation_prices)
+        top_donation = Donation.objects.filter(price = max_price)[0]
 
+        total_income = sum(all_donation_prices)
+
+        avg_donation_price = round(total_income/len(all_donation_prices),2)
 
         ctx = {
         "data_last":data_last,
@@ -47,7 +52,12 @@ class General:
         "data_sum":data_sum,
         "labels_sum":labels_last,
 
-        "all_st_donations": all_st_donations
+        "all_st_donations": all_st_donations,
+
+        "top_donation" : top_donation,
+        "total_income": int(total_income),
+        "avg_donation_price":avg_donation_price,
+
         }
         return render(request, "donation_app/streamer_analytics.html", ctx)
 
