@@ -11,6 +11,23 @@
 </div>
 
 
+<div class = "all_donations">
+  <table class = "table">
+    <tr>
+        <th>Сумма</th>
+        <th>Сообщение</th>
+        <th>Дата и время</th>
+    </tr>
+    {% for donation in all_st_donations %}
+    <tr>
+      <td>{{donation.price}}</td>
+      <td>{{donation.message}}</td>
+      <td>{{donation.date_created|date:"d.m"}} {{donation.date_created|time:"H:i"}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
 <script>
 
   //chart1(last)
@@ -42,9 +59,9 @@
   const data_sum = {
     labels: labels_sum,
     datasets: [{
-      label: 'Последние донаты',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
+      label: 'Общая сумма',
+      backgroundColor: 'rgb(0, 99, 132)',
+      borderColor: 'rgb(0, 99, 132)',
       data:   {{data_sum|safe}}
     }]
   };
@@ -64,8 +81,16 @@
 
 <style>
 .medium_chart{
-  height : 300px;
-  width : 400px;
+  height : 250px;
+  width : 500px;
+  display: inline-block;
+}
+
+.all_donations{
+  width:300px;
+  height: 400px;
+  overflow:auto;
+  border:solid 3px orange;
 }
 </style>
 {% endblock %}
