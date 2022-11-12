@@ -12,29 +12,29 @@ class General:
 
     #loginrequired
     def streamer_analytics(request):
+        LAST = 8
+
         user = request.user
         streamer =  Streamer.objects.filter(user = user)[0]
         all_st_donations = streamer.donation_set.all()
 
 
-
-        data_last = []
-        labels_last = []
+        all_donation_prices, all_donation_dates,all_donation_strdates = [], [], []
         for donation in all_st_donations:
-            data_last.append(donation.price)
-            labels_last.append(donation.date_created.strftime(" %d.%m %H:%M"))
+            all_donation_prices.append(donation.price)
+            all_donation_dates.append(donation.date_created)
+            all_donation_strdates.append(donation.date_created.strftime(" %d.%m %H:%M"))
+
+        data_last = all_donation_prices[:LAST]
+        labels_last = all_donation_strdates[:LAST]
 
 
 
-        # data_last = [6,3,1,8,6,3]
-        # labels_last = ["day1", "day2","day3","day4","day5","day6"]
 
-
-        #chart2(sum)
         data_sum = []
-        for i in range(len(data_last)):
-            if i > 0: data_sum.append(data_last[i] + data_last[i-1])
-            else: data_sum.append(data_last[i] + 0)
+        for i in range(len(all_donation_prices)):
+            if i > 0: data_sum.append(all_donation_prices[i] + data_sum[i-1])
+            else: data_sum.append(all_donation_prices[i] + 0)
 
 
 
@@ -43,8 +43,10 @@ class General:
         ctx = {
         "data_last":data_last,
         "labels_last":labels_last,
+
         "data_sum":data_sum,
         "labels_sum":labels_last,
+
         "all_st_donations": all_st_donations
         }
         return render(request, "donation_app/streamer_analytics.html", ctx)
