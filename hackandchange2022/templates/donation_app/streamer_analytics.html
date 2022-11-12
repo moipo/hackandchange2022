@@ -6,27 +6,29 @@
   <canvas id="last_donations" ></canvas>
 </div>
 
+
+
 <script>
-  const labels = {{labels|safe}}
-  const data = {
-    labels: labels,
+  const labels_last = {{labels_last|safe}}
+  const data_last = {
+    labels: labels_last,
     datasets: [{
       label: 'Последние донаты',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data:   {{data|safe}}              //[0, 10, 5, 2, 20, 30, 45],
+      data:   {{data_last|safe}}              //[0, 10, 5, 2, 20, 30, 45],
     }]
   };
 
-  const config = {
+  const config_last = {
     type: 'bar',
-    data: data,
+    data: data_last,
     options: {}
   };
 
   const last_donations = new Chart(
   document.getElementById('last_donations'),
-  config
+  config_last
 );
 </script>
 
