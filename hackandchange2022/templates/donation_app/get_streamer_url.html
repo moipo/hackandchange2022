@@ -1,6 +1,9 @@
 {% extends "donation_app/base.html" %}
 
 {% block get_streamer_url %}
+<form class="" action="#" method="post"> {%csrf_token%}
+  {{phone_form}}
+  <button type="submit" name="button" class = "btn btn-primary"></button>
+</form>
 
-<a href="{%url 'streamer_url' user_id%}">{{streamer_link}}</a>
 {% endblock %}

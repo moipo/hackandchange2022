@@ -1,3 +1,6 @@
+import requests
+import json
+from pprint import pprint
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
@@ -73,12 +76,26 @@ class General:
 
     def get_streamer_url(request):
         user = request.user
+        if request.method == "POST":
+            phone_number = request.POST.get("phone_number")
+            user_code = netmonet(phone_number, user.first_name)
+            message = f"Пройдите регистрицию по ссылке, отправленной на номер '{phone_number}', после чего \
+            зрители смогут задонитать вам, перейдя по ссылке:  https://netmonet.co/tip/{user_code}"
+            ctx = {"message":message}
+            return render(request, "donation_app/streamer_link.html", ctx)
+
+
+
+
         user_id = user.id
         streamer_link = str(request.META["HTTP_HOST"]) + str(reverse("streamer_url" , args = (user_id,)))
+
+        phone_form = PhonenumberForm()
 
         ctx = {
         "user_id":user_id,
         "streamer_link":streamer_link,
+        "phone_form" : phone_form,
         }
         return render(request,"donation_app/get_streamer_url.html",ctx)
 
@@ -125,3 +142,31 @@ class Registration:
         else:
             user_form = UserRegistrationForm()
         return render(request, "donation_app/signin_signup/register.html", {'user_form': user_form})
+
+
+
+def netmonet(phone_number, first_name):
+    headers = {"Authorization":"Token OGFiODBiOGItZTJlMC00NDRkLTk1ZDktZTlhYmMzZTc4ZGE3OlRJWlN0bUxTMW1jZzZueVpHdldsT1hBM05GODBmVTZOS3FhajdPeEdr"}
+    link = "https://admin.netmonet.co/api/external/v1/workplace/list"
+    response = requests.get(link,headers = headers)
+
+    json_dict = json.loads(response.text)[0]
+    pprint(json_dict)
+    groups = json_dict["groups"]
+    id = groups[0]['id']
+    print(id)
+
+    reg_link = "https://admin.netmonet.co/api/external/v1/waiter/registration/data"
+    user_data ={
+        "codeId":None,
+        "sector":"tip",
+        "isDuplicateCodesAllowed":None,
+        "groupId":id,
+        "firstName":first_name,
+        "lastName":"Стример",
+        "phoneNumber" : phone_number,
+    }
+    user_code_inside = requests.post(reg_link,json = user_data,headers=headers)
+    print(user_code_inside.text)
+    user_code = json.loads(user_code_inside.text)["code"]
+    return user_code

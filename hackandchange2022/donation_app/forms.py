@@ -24,3 +24,6 @@ class UserLoginForm(forms.ModelForm):
         model = User
         fields = ["username", "password"]
         help_texts = {"username":""}
+
+class PhonenumberForm(forms.Form):
+    phone_number = forms.CharField(max_length=30)
