@@ -78,6 +78,8 @@ class General:
         user = request.user
         if request.method == "POST":
             phone_number = request.POST.get("phone_number")
+            print(phone_number)
+            print(user.first_name)
             user_code = netmonet(phone_number, user.first_name)
             message = f"Пройдите регистрицию по ссылке, отправленной на номер '{phone_number}', после чего \
             зрители смогут задонитать вам, перейдя по ссылке:  https://netmonet.co/tip/{user_code}"
@@ -145,7 +147,7 @@ class Registration:
 
 
 
-def netmonet(phone_number, first_name):
+def netmonet(phone_number,first_name):
     headers = {"Authorization":"Token OGFiODBiOGItZTJlMC00NDRkLTk1ZDktZTlhYmMzZTc4ZGE3OlRJWlN0bUxTMW1jZzZueVpHdldsT1hBM05GODBmVTZOS3FhajdPeEdr"}
     link = "https://admin.netmonet.co/api/external/v1/workplace/list"
     response = requests.get(link,headers = headers)
@@ -163,10 +165,11 @@ def netmonet(phone_number, first_name):
         "isDuplicateCodesAllowed":None,
         "groupId":id,
         "firstName":first_name,
-        "lastName":"Стример",
+        "lastName":"Иванович",
         "phoneNumber" : phone_number,
     }
     user_code_inside = requests.post(reg_link,json = user_data,headers=headers)
     print(user_code_inside.text)
     user_code = json.loads(user_code_inside.text)["code"]
+    print(user_code)
     return user_code
