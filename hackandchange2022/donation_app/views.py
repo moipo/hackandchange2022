@@ -74,7 +74,7 @@ class General:
     def get_streamer_url(request):
         user = request.user
         user_id = user.id
-        streamer_link = str(request.META["HTTP_HOST"]) + str(reverse("streamer_url", args = (user_id,)))
+        streamer_link = str(request.META["HTTP_HOST"]) + str(reverse("streamer_url" , args = (user_id,)))
 
         ctx = {
         "user_id":user_id,
@@ -83,7 +83,7 @@ class General:
         return render(request,"donation_app/get_streamer_url.html",ctx)
 
     def streamer_url(request, user_id):
-        return render()
+        return render(request, "donation_app/donate.html",{} )
 
 
     def streamer_profile(request):
