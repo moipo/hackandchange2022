@@ -3,6 +3,6 @@
 
 
 {% block streamer_profile %}
-    <h1>Welcome {{ new_user.first_name }}!</h1>
-    <p>Your account has been successfully created. Now you can <a href="{% url 'login' %}">log in</a>.</p>
+<a href="{% url 'streamer_analytics'%}">Статистика</a> <hr>
+<a href="{% url 'get_streamer_url'%}">Получить уникальную ссылку для донатов</a>
 {% endblock %}

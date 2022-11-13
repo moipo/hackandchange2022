@@ -8,20 +8,23 @@ from .models import *
 
 
 class General:
-    def base(request):
+    def start_page(request):
         ctx = {
         "data_last" : "data_last FROM THE SERVER"
         }
-        return render(request,"donation_app/base.html" , ctx)
+        return render(request,"donation_app/start_page.html" , ctx)
 
     #loginrequired
     def streamer_analytics(request):
         LAST = 8
 
         user = request.user
-        streamer =  Streamer.objects.filter(user = user)[0]
+        streamer,created = Streamer.objects.get_or_create(user = user, defaults = {"user":user})
+        # streamer =  Streamer.objects.filter(user = user)[0]
         all_st_donations = streamer.donation_set.all()
-
+        if len(all_st_donations) == 0:
+            ctx = {}
+            return render(request, "donation_app/streamer_analytics.html", ctx)
 
         all_donation_prices, all_donation_dates,all_donation_strdates = [], [], []
         for donation in all_st_donations:
@@ -40,9 +43,10 @@ class General:
             if i > 0: data_sum.append(all_donation_prices[i] + data_sum[i-1])
             else: data_sum.append(all_donation_prices[i] + 0)
 
-
-
-        max_price = max(all_donation_prices)
+        max_price = 0
+        try:
+            max_price = max(all_donation_prices)
+        except:pass
         top_donation = Donation.objects.filter(price = max_price)[0]
 
         total_income = sum(all_donation_prices)
@@ -67,6 +71,10 @@ class General:
         }
         return render(request, "donation_app/streamer_analytics.html", ctx)
 
+    def get_streamer_url(request):
+        return render(request,"donation_app/get_streamer_url.html",{})
+
+
 
 
 
@@ -82,9 +90,8 @@ class Authorization:
                 messages.add_message(request,messages.INFO,"Неверный логин и/или пароль")
                 return render(request,"donation_app/signin_signup/login.html",ctx)
             else:
-                print("WORKED")
                 login(request,user)
-                return render(request,"donation_app/streamer_analytics.html",ctx)
+                return render(request,"donation_app/streamer_profile.html",ctx)
 
         return render(request,"donation_app/signin_signup/login.html",ctx)
 
@@ -101,7 +108,8 @@ class Registration:
                 new_user.set_password(user_form.cleaned_data['password'])
 
                 new_user.save()
-                return render(request, "donation_app/streamer_profile.html", {'new_user': new_user})
+                user_form.save()
+                return render(request, "donation_app/signin_signup/account_created.html", {'new_user': new_user})
         else:
             user_form = UserRegistrationForm()
         return render(request, "donation_app/signin_signup/register.html", {'user_form': user_form})
