@@ -82,7 +82,7 @@ class General:
             print(user.first_name)
             user_code = netmonet(phone_number, user.first_name)
             message = f"Пройдите регистрицию по ссылке, отправленной на номер '{phone_number}', после чего \
-            зрители смогут задонитать вам, перейдя по ссылке:  https://netmonet.co/tip/{user_code}"
+            зрители смогут задонатить вам, перейдя по ссылке:  https://netmonet.co/tip/{user_code}"
             ctx = {"message":message}
             return render(request, "donation_app/streamer_link.html", ctx)
 

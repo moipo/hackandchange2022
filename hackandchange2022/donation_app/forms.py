@@ -4,13 +4,19 @@ from django.contrib.auth.models import User
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
 
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email')
         help_texts = {"username":""}
+        labels = {
+        "username": "Логин",
+        "first_name":"Имя",
+        "email":"email",
+        "password":"пароль"
+        }
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -24,6 +30,11 @@ class UserLoginForm(forms.ModelForm):
         model = User
         fields = ["username", "password"]
         help_texts = {"username":""}
+
+        labels = {
+        "username": "Логин",
+        "password":"пароль",
+        }
 
 class PhonenumberForm(forms.Form):
     phone_number = forms.CharField(max_length=30)
