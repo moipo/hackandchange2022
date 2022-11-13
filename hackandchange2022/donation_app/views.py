@@ -75,7 +75,8 @@ class General:
         return render(request,"donation_app/get_streamer_url.html",{})
 
 
-
+    def streamer_profile(request):
+        return render(request,"donation_app/streamer_profile.html",{})
 
 
 class Authorization:
