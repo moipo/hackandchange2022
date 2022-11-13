@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import *
@@ -72,7 +72,18 @@ class General:
         return render(request, "donation_app/streamer_analytics.html", ctx)
 
     def get_streamer_url(request):
-        return render(request,"donation_app/get_streamer_url.html",{})
+        user = request.user
+        user_id = user.id
+        streamer_link = str(request.META["HTTP_HOST"]) + str(reverse("streamer_url", args = (user_id,)))
+
+        ctx = {
+        "user_id":user_id,
+        "streamer_link":streamer_link,
+        }
+        return render(request,"donation_app/get_streamer_url.html",ctx)
+
+    def streamer_url(request, user_id):
+        return render()
 
 
     def streamer_profile(request):
